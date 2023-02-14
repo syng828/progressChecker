@@ -1,9 +1,15 @@
 
 
-public class Question {
+public class Question { //Singular question
     private String question; 
     private String answer; 
+    private String guess; 
+    private boolean correct; 
 
+    public Question (String question, String answer) {
+        this.question = question; 
+        this.answer = answer; 
+    }
     public String getQuestion() {
         return question;
     }
@@ -20,10 +26,17 @@ public class Question {
         this.answer = answer;
     }
 
-    public Question(String q, String a) { 
-        question = q; 
-        answer = a; 
+    public boolean getCorrect() { 
+        return correct;
     }
     
-
+    //check if correct
+    public void check(String guess) {
+        if (guess.equals(answer)) { 
+            correct = true; 
+        }
+        else {
+            correct = false;
+        }
+    }
 }
