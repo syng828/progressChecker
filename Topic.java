@@ -80,7 +80,7 @@ public class Topic extends Change{
     }
     
     //Checks progress
-    public void printProgress (){
+    public String getProgress (){
         int total = question.size(); 
         int correct = 0;
         for (int i = 0; i < question.size(); i++){ 
@@ -89,18 +89,20 @@ public class Topic extends Change{
             }
         }
         if (total == 0) { 
-            System.out.println("No questions inside."); 
+            return ("No questions inside."); 
         } 
         else { 
-            System.out.println("Progress: " + ((double)correct/total * 100) + "%");
+            return ("Progress: " + ((double)correct/total * 100) + "%");
         }
     }
 
     //looks at the questions 
     @Override
     public void interact(Scanner scnr) {
-        System.out.println("Please select what you would like to do with questions 1. Go to a question, 2. Add a question, 3. Delete a question, 4. See questions and answers, 5. See questions only, 6. Look at progress, 7. Go back, 8. Quit");
-        while (scnr.hasNextLine()){
+        System.out.println("You are currently looking at all the questions. Please select what you would like to do with questions 1. Go to a question, 2. Add a question, 3. Delete a question, 4. See questions and answers, 5. See questions only, 6. Look at progress, 7. Go back");
+        boolean stillLooking = true;   
+
+        while (stillLooking){
         String scan = scnr.nextLine();
             switch(scan){ 
                 case "1": 
@@ -119,17 +121,14 @@ public class Topic extends Change{
                     getQuestions();
                     break;
                 case "6": 
-                    printProgress();
+                    System.out.println(getProgress()); 
                     break; 
                 case "7": 
-                    System.out.println("Please specify what you would like to do with the topics. 1. Go to a topic, 2. Add a topic, 3. Delete a topic, 4. See all topics, 5. Go back, 6. Quit"); 
-                    return; 
-                case "8": 
-                    System.out.println("See you again!"); 
-                    System.exit(0); 
+                    System.out.println("Please specify what you would like to do with the topics. 1. Go to a topic, 2. Add a topic, 3. Delete a topic, 4. See all topics, 5. Go back"); 
+                    stillLooking = false; 
+                    break; 
                 default: 
                     System.out.println("Please enter a valid input");
-                    scan = scnr.nextLine();
                     break;
             }
            }

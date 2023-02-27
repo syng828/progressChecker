@@ -1,7 +1,8 @@
 //the other classes share similarities to this. 
+import java.io.Serializable;
 import java.util.Scanner;
 
-public abstract class Change { 
+public abstract class Change implements Serializable{ 
     String name; 
     
     public abstract void goIn(Scanner scnr); 

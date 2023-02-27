@@ -1,6 +1,8 @@
+
+import java.io.Serializable;
 import java.util.Scanner;
 
-public class Question { //Singular question
+public class Question implements Serializable{ //Singular question
     private String question; 
     private String answer; 
     private boolean correct = false; 
@@ -44,8 +46,9 @@ public class Question { //Singular question
 
     //Interact with question
     public void interact(Scanner scnr) { 
-        System.out.println("Please select what you would like to edit in the questions. 1. Get the question, 2. Guess the answer, 3. Get the answer, 4. Set the answer, 5. Go back, 6. Quit"); 
-        while (scnr.hasNextLine()){
+        System.out.println("Please select what you would like to edit in the questions. 1. Get the question, 2. Guess the answer, 3. Get the answer, 4. Set the answer, 5. Go back"); 
+        boolean stillLooking = true; 
+        while (stillLooking){
         String scan = scnr.nextLine();
             switch(scan){  
                 case "1":
@@ -61,14 +64,11 @@ public class Question { //Singular question
                     setAnswer(scnr);
                     break;
                 case "5": 
-                    System.out.println("Please select what you would like to do with questions 1. Go to a question, 2. Add a question, 3. Delete a question, 4. See questions and answers, 5. See questions only, 6. Look at progress, 7. Go back, 8. Quit");
-                    return; 
-                case "6": 
-                    System.out.println("See you again!"); 
-                    System.exit(0); 
+                    System.out.println("Please select what you would like to do with questions 1. Go to a question, 2. Add a question, 3. Delete a question, 4. See questions and answers, 5. See questions only, 6. Look at progress, 7. Go back");
+                    stillLooking = false; 
+                    break; 
                 default: 
                     System.out.println("Please enter a valid input");
-                    scan = scnr.nextLine(); 
                     break;
             } 
         }

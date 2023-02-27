@@ -54,6 +54,9 @@ public class Subject extends Change {
         System.out.println("Could not find."); 
     } 
 
+    public ArrayList<Topic> getArrayList() { 
+        return topic; 
+    }
     @Override
     public void printArrayList() { 
         if (topic.size() == 0) { 
@@ -69,8 +72,10 @@ public class Subject extends Change {
     //Starts reading the subject class. 
    
     public void interact(Scanner scnr) { 
-        System.out.println("Please specify what you would like to do with the topics. 1. Go to a topic, 2. Add a topic, 3. Delete a topic, 4. See all topics, 5. Go back, 6. Quit"); 
-        while (scnr.hasNextLine()){
+        System.out.println(" You are currently looking at all the topics. Please specify what you would like to do with the topics. 1. Go to a topic, 2. Add a topic, 3. Delete a topic, 4. See all topics, 5. Go back");
+        boolean stillLooking = true;  
+
+        while (stillLooking){
         String scan = scnr.nextLine();
         switch(scan){ 
             case "1": 
@@ -87,13 +92,10 @@ public class Subject extends Change {
                 break;
             case "5":
                 System.out.println(" First please choose what you want to do with subjects. 1. Go to a subject, 2. Add subject, 3. Delete subject, 4. See all subjects, 5. Quit");
-                return; 
-            case "6": 
-                System.out.println("See you again!"); 
-                System.exit(0); 
+                stillLooking = false; 
+                break; 
             default: 
                 System.out.println("Please enter a valid input");
-                scan = scnr.nextLine(); 
                 break;
         }
        }
