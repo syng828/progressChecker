@@ -1,14 +1,11 @@
-/* 
-Quick TODOs: 
-@TODO: Next time working on this, I'll move it all to another class, and the file reader make it a static method above. 
-@TODO: And perhaps save the files to an actual directory, so that can delete. 
-
+/*
 @TODO: UI creation. */
 
+//checked: filenotfound, IOException 
 
 import java.util.Scanner;
-import java.util.ArrayList;
 import java.io.EOFException;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -16,115 +13,16 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.IOException;
 
-public class Main extends Change {
-  private ArrayList<Subject> start = new ArrayList<Subject>(); 
+public class Main {
+  public static void fileScan (Scanner scnr)  { 
+    System.out.println("This can track your progress. You can modify all subjects, topics, and questions if you like."); 
+    System.out.println("First, please indicate if you would like to open an old save file, or create a new file. (O/N). Keep in mind that the file will be saved to your home directory."); 
+    String choice = scnr.nextLine(); 
 
-  @Override
-  public void addInArrayList(Scanner scnr) {
-    System.out.println("Enter a subject name: "); 
-    String name = scnr.nextLine();
-    start.add(new Subject(name));
-    System.out.println("Subject added.");
-  }
-
-  @Override
-  public void deleteInArrayList(Scanner scnr) {
-    System.out.println("Please enter the subject you would like to delete." );
-    String taskName = scnr.nextLine();
-    for (int i = 0; i < start.size(); i++) { 
-      if (start.get(i).getName().equals(taskName)) { 
-          start.remove(i);
-          System.out.println("Deleted.");  
-          return; 
-      }
-    }
-    System.out.println("Could not find."); 
-  }
-
-  @Override
-  public void goIn(Scanner scnr) {
-    System.out.println("Enter a subject name to search for: "); 
-    String name = scnr.nextLine();
-    int currentTaskLooking = -1;
-    for (int i = 0; i < start.size(); i++) { 
-        if (start.get(i).getName().equals(name)) { 
-            currentTaskLooking = i;
-            start.get(i).interact(scnr); 
-        }
-      }
-    if (currentTaskLooking == -1){
-        System.out.println("Not found."); 
-    }
-  }
-
-
-  @Override
-  public void printArrayList() {
-    if (start.size() == 0) { 
-      System.out.println("No subjects inside."); 
-   }
-   else {
-    for (Subject s: start){
-      System.out.println(s.getName()); 
-    }
-    }
-  }
-
-  public void printAll() { 
-    for (int i = 0 ; i < start.size(); i++) { 
-      System.out.println("Subject: " + start.get(i).getName()); 
-      ArrayList <Topic> gotten = start.get(i).getArrayList();
-      for (int j = 0; j <gotten.size(); j++) { 
-        System.out.println (" Topic: " + gotten.get(j).getName() + " | " + gotten.get(j).getProgress()); 
-      }
-    }
-
-  }
-   //Starts interacting 
-  
-     public void interact(Scanner scnr){
-      System.out.println("Would you like to see all your information? Please enter Y if so."); 
-      String scan = scnr.nextLine(); 
-      if (scan.equals("Y")) { 
-        printAll(); 
-      }
-
-      System.out.println(" You are currently looking at all the subjects. Please choose what you want to do with subjects. 1. Go to a subject, 2. Add subject, 3. Delete subject, 4. See all subjects, 5. Quit");
-      boolean stillLooking = true; 
-      while (stillLooking) { 
-        scan = scnr.nextLine();       
-          switch(scan){      
-              case "1": 
-                  goIn(scnr);
-                  break;
-              case "2":
-                  addInArrayList(scnr);
-                  break;
-              case "3":
-                  deleteInArrayList(scnr);
-                  break;
-              case "4": 
-                  printArrayList();
-                  break;
-              case "5": 
-                  stillLooking = false; 
-                  break;
-              default: 
-                  System.out.println("Please enter a valid input");
-                  break; 
-          }
-      }
-  }
-    
-    public static void main( String[]args) throws IOException {  
-
-        Scanner scnr = new Scanner(System.in);  
-      
-        System.out.println("This can track your progress. You can modify all subjects, topics, and questions if you like."); 
-        System.out.println("First, please indicate if you would like to open an old save file, or create a new file. (O/N)"); 
-        String choice = scnr.nextLine(); 
-
-        boolean foundValid = false; 
+    boolean foundValid = false;
+    File dirf;  
+    dirf = new File(System.getProperty("user.home"));
+    File file;
 
         while (!foundValid){    //loops until gives wanted input.
         try {                                        
@@ -132,13 +30,15 @@ public class Main extends Change {
             foundValid = true; 
 
             System.out.println("Please enter the name of the file."); 
-            choice = scnr.nextLine(); 
-            FileInputStream fis = new FileInputStream(choice + ".txt"); 
+            choice = scnr.nextLine();
+            file = new File(dirf, choice + ".txt");
+            FileInputStream fis = new FileInputStream(file); 
             ObjectInputStream objectIn = new ObjectInputStream(fis);
-            Main read = (Main) objectIn.readObject();      
+            Start read = (Start) objectIn.readObject();      
             read.interact(scnr); 
 
-            FileOutputStream fos = new FileOutputStream(choice + ".txt"); //Rewrites the file 
+            file = new File(dirf, choice + ".txt");
+            FileOutputStream fos = new FileOutputStream(file); //Rewrites the file 
             ObjectOutputStream objectOut = new ObjectOutputStream(fos); 
 
             objectOut.writeObject(read); 
@@ -149,14 +49,15 @@ public class Main extends Change {
 
           else if (choice.equals("N")){        //Creates a new file 
                                                         
-            foundValid = true; 
-
-            System.out.println("Please enter a name for your file");
+            foundValid = true;
+            
+            System.out.println("Please enter a name for your file.");
             choice = scnr.nextLine(); 
-            FileOutputStream fos = new FileOutputStream(choice + ".txt");
+            file = new File(dirf, choice + ".txt");
+            FileOutputStream fos = new FileOutputStream(file);
             ObjectOutputStream objectOut = new ObjectOutputStream(fos);
 
-            Main read = new Main(); 
+            Start read = new Start(); 
             read.interact(scnr); 
             objectOut.writeObject(read);
             System.out.println("Successfully written into a file.");
@@ -170,16 +71,19 @@ public class Main extends Change {
         }
 
         //Exceptions
-        catch (FileNotFoundException e) {  
-          System.out.println("File not found. Please input O again if you would like to open another file.");
+        catch (FileNotFoundException e) { 
+          System.out.println("File not found. Please input O/N again if you would like to open another file or create a new file.");
           foundValid = false; 
           choice = scnr.nextLine(); 
         }
         catch (EOFException e) { 
-          e.printStackTrace(); 
+          e.getMessage(); 
         }
         catch (IOException e) { 
-          e.printStackTrace();
+          e.getMessage();
+        }
+        catch (ClassNotFoundException e){ 
+          e.getMessage();
         }
        catch (Exception e) { 
           System.out.println(e.getMessage());
@@ -190,6 +94,10 @@ public class Main extends Change {
         
     }
 
-    
-}
+    public static void main( String[]args) {  
 
+        Scanner scnr = new Scanner(System.in);  
+        fileScan(scnr); 
+    
+    }
+}
