@@ -1,8 +1,3 @@
-/*
-@TODO: UI creation. */
-
-//checked: filenotfound, IOException 
-
 import java.util.Scanner;
 import java.io.EOFException;
 import java.io.File;

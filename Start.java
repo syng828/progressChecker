@@ -1,7 +1,9 @@
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Start extends Change {
+    private static final long serialVersionUID = 1L;
     private ArrayList<Subject> start = new ArrayList<Subject>(); 
 
 
@@ -56,15 +58,16 @@ public class Start extends Change {
       }
     }
   
-    public void printAll() { 
+    public String printAll() { 
+      String toBeReturned = "";
       for (int i = 0 ; i < start.size(); i++) { 
-        System.out.println("Subject: " + start.get(i).getName()); 
+        toBeReturned += ("Subject: " + start.get(i).getName() + "\n"); 
         ArrayList <Topic> gotten = start.get(i).getArrayList();
         for (int j = 0; j <gotten.size(); j++) { 
-          System.out.println (" Topic: " + gotten.get(j).getName() + " | " + gotten.get(j).getProgress()); 
+          toBeReturned+= (" Topic: " + gotten.get(j).getName() + " | " + gotten.get(j).getProgress() + "\n"); 
         }
       }
-  
+      return toBeReturned;
     }
      //Starts interacting 
     
@@ -72,7 +75,7 @@ public class Start extends Change {
         System.out.println("Would you like to see all your information? Please enter Y if so."); 
         String scan = scnr.nextLine(); 
         if (scan.equals("Y")) { 
-          printAll(); 
+          System.out.println(printAll()); 
         }
   
         System.out.println(" You are currently looking at all the subjects. Please choose what you want to do with subjects. 1. Go to a subject, 2. Add subject, 3. Delete subject, 4. See all subjects, 5. Quit");
