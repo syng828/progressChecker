@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "MainPageGUI",
+            "request": "launch",
+            "mainClass": "MainPageGUI",
+            "projectName": "progressChecker_f39c848c"
+        },
+        {
+            "type": "java",
+            "name": "MainPage",
+            "request": "launch",
+            "mainClass": "MainPage",
+            "projectName": "progressChecker_f39c848c"
+        },
+        {
+            "type": "java",
             "name": "ProgressGUI",
             "request": "launch",
             "mainClass": "ProgressGUI",
